@@ -1,5 +1,5 @@
 #![cfg_attr(not(feature = "std"), no_std)]
-use crate::common::{Error, Receiver, WithdrawParams};
+use crate::common::{Error, Receiver};
 use concordium_std::*;
 
 #[derive(Debug, Deserial, Serial, SchemaType, PartialEq)]
@@ -79,12 +79,10 @@ fn contract_attacker_attack(
 
     let victim = host.state().victim;
 
-    let params = WithdrawParams {
-        receiver: Receiver::Contract(
-            ctx.self_address(),
-            OwnedEntrypointName::new_unchecked("receive".to_string()),
-        ),
-    };
+    let params = Receiver::Contract(
+        ctx.self_address(),
+        OwnedEntrypointName::new_unchecked("receive".to_string()),
+    );
 
     host.invoke_contract(
         &victim,
@@ -120,12 +118,10 @@ fn contract_attacker_receive(
     let victim_balance = host.contract_balance(victim)?;
 
     if victim_balance >= host.state().deposit {
-        let params = WithdrawParams {
-            receiver: Receiver::Contract(
-                ctx.self_address(),
-                OwnedEntrypointName::new_unchecked("receive".to_string()),
-            ),
-        };
+        let params = Receiver::Contract(
+            ctx.self_address(),
+            OwnedEntrypointName::new_unchecked("receive".to_string()),
+        );
 
         host.invoke_contract_raw(
             &victim,

@@ -46,16 +46,11 @@ pub enum Receiver {
     Contract(ContractAddress, OwnedEntrypointName),
 }
 
-#[derive(Debug, Serialize, SchemaType)]
-pub struct WithdrawParams {
-    pub receiver: Receiver,
-}
-
-impl WithdrawParams {
+impl Receiver {
     pub fn get_address(&self) -> Address {
-        match self.receiver {
-            Receiver::Account(account) => Address::from(account),
-            Receiver::Contract(contract, _) => Address::from(contract),
+        match self {
+            Receiver::Account(account) => Address::from(*account),
+            Receiver::Contract(contract, _) => Address::from(*contract),
         }
     }
 }
@@ -65,7 +60,7 @@ pub mod tests {
     use anyhow::Result;
     use concordium_smart_contract_testing::*;
 
-    use crate::common::{Receiver, WithdrawParams};
+    use crate::common::Receiver;
 
     pub const REENTRANCE: &str = "reentrance";
     pub const REENTRANCE_READONLY: &str = "reentrance_readonly";
@@ -226,9 +221,8 @@ pub mod tests {
             .contract_balance(reentrance_contract.contract_address)
             .unwrap();
 
-        let params: WithdrawParams = WithdrawParams {
-            receiver: Receiver::Account(ACC_ADDR_OTHER),
-        };
+        let params = Receiver::Account(ACC_ADDR_OTHER);
+
         let other_balance_before = chain.account_balance(ACC_ADDR_OTHER).unwrap();
 
         // Act

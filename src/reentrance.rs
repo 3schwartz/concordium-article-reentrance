@@ -1,7 +1,7 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 use concordium_std::*;
 
-use crate::common::{Error, Receiver, WithdrawParams};
+use crate::common::{Error, Receiver};
 
 #[derive(DeserialWithState, Serial)]
 #[concordium(state_parameter = "S")]
@@ -72,12 +72,12 @@ fn contract_view(
 #[receive(
     contract = "reentrance",
     name = "withdraw",
-    parameter = "WithdrawParams",
+    parameter = "Receiver",
     error = "Error",
     mutable
 )]
 fn contract_withdraw(ctx: &ReceiveContext, host: &mut Host<State>) -> Result<(), Error> {
-    let params: WithdrawParams = ctx.parameter_cursor().get()?;
+    let params: Receiver = ctx.parameter_cursor().get()?;
     let state = host.state();
     let address = params.get_address();
 
@@ -88,7 +88,7 @@ fn contract_withdraw(ctx: &ReceiveContext, host: &mut Host<State>) -> Result<(),
 
     let amount_to_transfer = deposited.to_owned();
 
-    match params.receiver {
+    match params {
         Receiver::Account(address) => host.invoke_transfer(&address, amount_to_transfer)?,
         Receiver::Contract(address, function) => {
             host.invoke_contract_raw(

@@ -1,7 +1,7 @@
 #![cfg_attr(not(feature = "std"), no_std)]
 use concordium_std::*;
 
-use crate::common::{Error, Receiver, WithdrawParams};
+use crate::common::{Error, Receiver};
 
 #[derive(Serialize, SchemaType)]
 pub struct SaintState {
@@ -49,12 +49,10 @@ fn contract_saint_attack(ctx: &ReceiveContext, host: &mut Host<SaintState>) -> R
     ensure!(ctx.sender().matches_account(&ctx.owner()), Error::Owner);
     let other = host.state().other;
 
-    let params = WithdrawParams {
-        receiver: Receiver::Contract(
-            ctx.self_address(),
-            OwnedEntrypointName::new_unchecked("receive".to_string()),
-        ),
-    };
+    let params = Receiver::Contract(
+        ctx.self_address(),
+        OwnedEntrypointName::new_unchecked("receive".to_string()),
+    );
 
     host.invoke_contract_raw(
         &other,
