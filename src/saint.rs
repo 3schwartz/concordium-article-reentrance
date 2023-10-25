@@ -109,26 +109,22 @@ mod test {
 
     #[test]
     fn test_receive_reentrance_mutex() -> Result<()> {
-        test_reentrance_skeleton(Victim::RentranceMutex)?;
-        Ok(())
+        test_reentrance_skeleton(Victim::RentranceMutex)
     }
 
     #[test]
     fn test_receive_reentrance_checks_effects_interactions() -> Result<()> {
-        test_reentrance_skeleton(Victim::ReentranceChecksEffectsInteractions)?;
-        Ok(())
+        test_reentrance_skeleton(Victim::ReentranceChecksEffectsInteractions)
     }
 
     #[test]
     fn test_receive_reentrance_readonly() -> Result<()> {
-        test_reentrance_skeleton(Victim::ReentraceReadonly)?;
-        Ok(())
+        test_reentrance_skeleton(Victim::ReentraceReadonly)
     }
 
     #[test]
     fn test_receive_reentrance() -> Result<()> {
-        test_reentrance_skeleton(Victim::Reentrance)?;
-        Ok(())
+        test_reentrance_skeleton(Victim::Reentrance)
     }
 
     fn test_reentrance_skeleton(victim: Victim) -> Result<()> {
@@ -140,7 +136,7 @@ mod test {
 
         const TO_TRANSFER: Amount = Amount::from_ccd(42);
         // deposit from ACC other
-        let _ = reentrace_deposit(
+        reentrace_deposit(
             contract_name,
             ACC_ADDR_OTHER,
             reentrance_contract.contract_address,
@@ -148,7 +144,7 @@ mod test {
             &mut chain,
         )?;
         // deposit from ACC attacker
-        let _ = reentrace_deposit(
+        reentrace_deposit(
             "saint",
             ACC_ADDR_OTHER,
             saint.contract_address,

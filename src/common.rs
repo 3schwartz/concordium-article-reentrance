@@ -213,7 +213,7 @@ pub mod tests {
 
         const TO_TRANSFER: Amount = Amount::from_ccd(42);
 
-        let _ = reentrace_deposit(
+        reentrace_deposit(
             contract_name,
             ACC_ADDR_OTHER,
             reentrance_contract.contract_address,

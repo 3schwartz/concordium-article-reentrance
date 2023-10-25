@@ -103,17 +103,15 @@ fn contract_withdraw(ctx: &ReceiveContext, host: &mut Host<State>) -> Result<(),
 #[cfg(test)]
 mod test {
     use crate::common::tests::*;
-    use anyhow::{Ok, Result};
+    use anyhow::Result;
 
     #[test]
     fn test_reentrance_deposit_from_account() -> Result<()> {
-        reentrance_deposit_validation(Victim::ReentranceChecksEffectsInteractions)?;
-        Ok(())
+        reentrance_deposit_validation(Victim::ReentranceChecksEffectsInteractions)
     }
 
     #[test]
     fn test_reentrance_withdraw() -> Result<()> {
-        reentrance_withdraw_validation(Victim::ReentranceChecksEffectsInteractions)?;
-        Ok(())
+        reentrance_withdraw_validation(Victim::ReentranceChecksEffectsInteractions)
     }
 }

@@ -163,14 +163,12 @@ mod test {
 
     #[test]
     fn test_attack_reentrance_mutex() -> Result<()> {
-        validation_error(Victim::RentranceMutex, AttackError::Trapped)?;
-        Ok(())
+        validation_error(Victim::RentranceMutex, AttackError::Trapped)
     }
 
     #[test]
     fn test_attack_reentrance_readonly() -> Result<()> {
-        validation_error(Victim::ReentraceReadonly, AttackError::Trapped)?;
-        Ok(())
+        validation_error(Victim::ReentraceReadonly, AttackError::Trapped)
     }
 
     #[test]
@@ -178,8 +176,7 @@ mod test {
         validation_error(
             Victim::ReentranceChecksEffectsInteractions,
             AttackError::Custom(Error::NothingDeposited),
-        )?;
-        Ok(())
+        )
     }
 
     fn validation_error(victim: Victim, expected_error: AttackError) -> Result<()> {
@@ -352,7 +349,7 @@ mod test {
         const TO_TRANSFER: Amount = Amount::from_ccd(42);
 
         // Act
-        let _ = reentrace_deposit(
+        reentrace_deposit(
             "attacker",
             ACC_ADDR_ATTACKER,
             attacker.contract_address,

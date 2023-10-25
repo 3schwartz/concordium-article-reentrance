@@ -112,13 +112,11 @@ mod test {
 
     #[test]
     fn test_reentrance_deposit_from_account() -> Result<()> {
-        reentrance_deposit_validation(Victim::Reentrance)?;
-        Ok(())
+        reentrance_deposit_validation(Victim::Reentrance)
     }
 
     #[test]
     fn test_reentrance_withdraw() -> Result<()> {
-        reentrance_withdraw_validation(Victim::Reentrance)?;
-        Ok(())
+        reentrance_withdraw_validation(Victim::Reentrance)
     }
 }
