@@ -117,9 +117,11 @@ fn contract_attacker_receive(
     let victim = host.state().victim;
     let victim_balance = host.contract_balance(victim)?;
 
+    // Check whether we can attack more times.
     if victim_balance >= host.state().deposit {
         let params = Receiver::Contract(
             ctx.self_address(),
+            // Let the callback go to the "receive" entrypoint
             OwnedEntrypointName::new_unchecked("receive".to_string()),
         );
 
