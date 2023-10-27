@@ -71,6 +71,7 @@ pub mod tests {
     pub const ACC_ADDR_OWNER: AccountAddress = AccountAddress([0u8; 32]);
     pub const ACC_ADDR_OTHER: AccountAddress = AccountAddress([1u8; 32]);
     pub const ACC_ADDR_ATTACKER: AccountAddress = AccountAddress([2u8; 32]);
+    pub const SIGNER: Signer = Signer::with_one_key();
 
     pub const ACC_INITIAL_BALANCE: Amount = Amount::from_ccd(42_000);
 
@@ -108,11 +109,11 @@ pub mod tests {
         chain.create_account(Account::new(ACC_ADDR_OTHER, ACC_INITIAL_BALANCE));
         chain.create_account(Account::new(ACC_ADDR_ATTACKER, ACC_INITIAL_BALANCE));
 
-        let deployment = chain.module_deploy_v1(Signer::with_one_key(), ACC_ADDR_OWNER, module)?;
+        let deployment = chain.module_deploy_v1(SIGNER, ACC_ADDR_OWNER, module)?;
         let contract_name = victim.name();
 
         let reentrance = chain.contract_init(
-            Signer::with_one_key(),
+            SIGNER,
             ACC_ADDR_OWNER,
             Energy::from(10_000),
             InitContractPayload {
@@ -124,7 +125,7 @@ pub mod tests {
         )?;
 
         let attacker = chain.contract_init(
-            Signer::with_one_key(),
+            SIGNER,
             ACC_ADDR_ATTACKER,
             Energy::from(10_000),
             InitContractPayload {
@@ -136,7 +137,7 @@ pub mod tests {
         )?;
 
         let saint = chain.contract_init(
-            Signer::with_one_key(),
+            SIGNER,
             ACC_ADDR_OTHER,
             Energy::from(10_000),
             InitContractPayload {
@@ -187,7 +188,7 @@ pub mod tests {
         chain: &mut Chain,
     ) -> Result<ContractInvokeSuccess, ContractInvokeError> {
         chain.contract_update(
-            Signer::with_one_key(),
+            SIGNER,
             account_addr,
             Address::from(account_addr),
             Energy::from(42_000),
@@ -227,7 +228,7 @@ pub mod tests {
 
         // Act
         let withdraw_update = chain.contract_update(
-            Signer::with_one_key(),
+            SIGNER,
             ACC_ADDR_OTHER,
             Address::from(ACC_ADDR_OTHER),
             Energy::from(42_000),

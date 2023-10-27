@@ -170,7 +170,7 @@ mod test {
     }
 
     #[test]
-    fn test_attack_reentrance_reentrance_checks_effects_interactions() -> Result<()> {
+    fn test_attack_reentrance_checks_effects_interactions() -> Result<()> {
         validation_error(
             Victim::ReentranceChecksEffectsInteractions,
             AttackError::Custom(Error::NothingDeposited),

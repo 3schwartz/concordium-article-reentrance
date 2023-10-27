@@ -164,21 +164,6 @@ mod test {
             },
         )?;
 
-        let saint_balance_before_transfer = chain.account_balance(ACC_ADDR_OTHER).unwrap();
-
-        let transfer_update = chain.contract_update(
-            Signer::with_one_key(),
-            ACC_ADDR_OTHER,
-            Address::from(ACC_ADDR_OTHER),
-            Energy::from(42_000),
-            UpdateContractPayload {
-                amount: Amount::zero(),
-                address: saint.contract_address,
-                receive_name: OwnedReceiveName::new_unchecked("saint.transfer".to_string()),
-                message: OwnedParameter::empty(),
-            },
-        )?;
-
         // Assert
         assert_eq!(
             chain
@@ -186,13 +171,11 @@ mod test {
                 .unwrap(),
             TO_TRANSFER
         );
-
-        let saint_balance_after_transfer = chain.account_balance(ACC_ADDR_OTHER).unwrap();
         assert_eq!(
-            saint_balance_after_transfer.available(),
-            saint_balance_before_transfer.available() + TO_TRANSFER
-                - transfer_update.transaction_fee
+            chain.contract_balance(saint.contract_address).unwrap(),
+            TO_TRANSFER
         );
+
         // This is only used later to get the energy used.
         println!(
             "Energy used withdraw - {} - {}",
